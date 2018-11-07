@@ -5,7 +5,7 @@ if(isset($_POST['submit'])){
     $data_missing = array();
     $counter = 0;
     $string = "";
-
+    
     if(empty($_POST['title'])){
 
         $data_missing[] = 'Title';
