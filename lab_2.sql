@@ -2,8 +2,8 @@
 -- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 08, 2018 at 04:08 AM
+-- Host: localhost
+-- Generation Time: Nov 08, 2018 at 10:32 AM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.11
 
@@ -31,6 +31,28 @@ SET time_zone = "+00:00";
 CREATE TABLE `actor` (
   `name` varchar(50) NOT NULL,
   `actor_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `caption`
+--
+
+CREATE TABLE `caption` (
+  `caption_id` int(11) UNSIGNED NOT NULL,
+  `captions` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `captions_provided`
+--
+
+CREATE TABLE `captions_provided` (
+  `caption_id` int(11) UNSIGNED NOT NULL,
+  `m_id` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -94,8 +116,65 @@ INSERT INTO `director` (`name`, `director_id`) VALUES
 CREATE TABLE `episode` (
   `episode_id` int(11) UNSIGNED NOT NULL,
   `m_id` int(11) UNSIGNED NOT NULL,
-  `episode_no` int(5) UNSIGNED NOT NULL,
   `episode_rating` float UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `episode`
+--
+
+INSERT INTO `episode` (`episode_id`, `m_id`, `episode_rating`) VALUES
+(1, 5, 0),
+(1, 7, 0),
+(2, 5, 0),
+(2, 7, 0),
+(3, 5, 0),
+(3, 7, 0),
+(4, 5, 0),
+(4, 7, 0),
+(5, 5, 0),
+(5, 7, 0),
+(6, 5, 0),
+(6, 7, 0),
+(7, 5, 0),
+(8, 5, 0),
+(9, 5, 0),
+(10, 5, 0),
+(11, 5, 0),
+(12, 5, 0),
+(13, 5, 0),
+(14, 5, 0),
+(15, 5, 0),
+(16, 5, 0),
+(17, 5, 0),
+(18, 5, 0),
+(19, 5, 0),
+(20, 5, 0),
+(21, 5, 0),
+(22, 5, 0),
+(23, 5, 0),
+(24, 5, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `language`
+--
+
+CREATE TABLE `language` (
+  `language_id` int(11) UNSIGNED NOT NULL,
+  `language` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `language_provide`
+--
+
+CREATE TABLE `language_provide` (
+  `language_id` int(11) UNSIGNED NOT NULL,
+  `m_id` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -124,8 +203,9 @@ CREATE TABLE `material` (
 INSERT INTO `material` (`title`, `m_id`, `year`, `genre`, `category`, `episodes`, `language`, `MPAA_rating`, `rating`, `votes`) VALUES
 ('Star Wars', 1, 1977, 'Sci-Fi', 'Movie', 1, 'English', '1', 5, 0),
 ('Indiana Jones', 4, 1981, 'Adventure', 'Movie', 1, 'English', '2', 3.5, 0),
-('Friends', 5, 1994, 'Comedy', 'TV-series', 24, 'English', '2', 4.14286, 0),
-('Jaws', 6, 1975, 'Thriller', 'Movie', 1, 'English', '2', NULL, 0);
+('Friends - Season 1', 5, 1994, 'Comedy', 'TV-series', 24, 'English', '2', 4.125, 0),
+('Jaws', 6, 1975, 'Thriller', 'Movie', 1, 'English', '2', NULL, 0),
+('The Walking Dead - Season 1', 7, 2010, 'Horror', 'TV-series', 6, 'English', '3', 4, NULL);
 
 -- --------------------------------------------------------
 
@@ -226,17 +306,19 @@ INSERT INTO `user_history` (`user_id`, `m_id`, `e_id`, `watch_date`, `personal_r
 (3, 1, 1, '2018-10-10', 5, 0),
 (3, 4, 1, '2018-11-07', 3, 0),
 (4, 4, 1, '2018-11-07', 4, 0),
-(3, 5, 1, '2018-11-08', 3, 13),
-(3, 5, 3, '2018-11-08', 4, 13),
-(3, 5, 4, '2018-11-08', 3, 13),
-(3, 5, 6, '2018-11-08', 5, 13),
-(3, 5, 7, '2018-11-08', 0, 13),
-(3, 5, 8, '2018-11-08', 0, 13),
-(3, 5, 9, '2018-11-08', 4, 13),
-(3, 5, 13, '2018-11-08', 0, 13),
-(3, 5, 16, '2018-11-08', 0, 13),
-(3, 5, 17, '2018-11-08', 5, 13),
-(3, 5, 24, '2018-11-08', 5, 13);
+(3, 5, 1, '2018-11-08', 3, 12),
+(3, 5, 3, '2018-11-08', 4, 12),
+(3, 5, 4, '2018-11-08', 3, 12),
+(3, 5, 6, '2018-11-08', 5, 12),
+(3, 5, 7, '2018-11-08', 4, 12),
+(3, 5, 8, '2018-11-08', 0, 12),
+(3, 5, 9, '2018-11-08', 4, 12),
+(3, 5, 13, '2018-11-08', 0, 12),
+(3, 5, 14, '2018-11-08', 0, 12),
+(3, 5, 16, '2018-11-08', 0, 12),
+(3, 5, 17, '2018-11-08', 5, 12),
+(3, 5, 24, '2018-11-08', 5, 12),
+(3, 7, 1, '2018-11-08', 4, 5);
 
 --
 -- Indexes for dumped tables
@@ -247,6 +329,19 @@ INSERT INTO `user_history` (`user_id`, `m_id`, `e_id`, `watch_date`, `personal_r
 --
 ALTER TABLE `actor`
   ADD PRIMARY KEY (`actor_id`);
+
+--
+-- Indexes for table `caption`
+--
+ALTER TABLE `caption`
+  ADD PRIMARY KEY (`caption_id`);
+
+--
+-- Indexes for table `captions_provided`
+--
+ALTER TABLE `captions_provided`
+  ADD PRIMARY KEY (`caption_id`,`m_id`),
+  ADD KEY `m_id` (`m_id`);
 
 --
 -- Indexes for table `company`
@@ -270,7 +365,20 @@ ALTER TABLE `director`
 -- Indexes for table `episode`
 --
 ALTER TABLE `episode`
-  ADD PRIMARY KEY (`episode_id`),
+  ADD PRIMARY KEY (`episode_id`,`m_id`),
+  ADD KEY `m_id` (`m_id`);
+
+--
+-- Indexes for table `language`
+--
+ALTER TABLE `language`
+  ADD PRIMARY KEY (`language_id`);
+
+--
+-- Indexes for table `language_provide`
+--
+ALTER TABLE `language_provide`
+  ADD PRIMARY KEY (`language_id`,`m_id`),
   ADD KEY `m_id` (`m_id`);
 
 --
@@ -324,10 +432,22 @@ ALTER TABLE `user_history`
 --
 
 --
+-- AUTO_INCREMENT for table `caption`
+--
+ALTER TABLE `caption`
+  MODIFY `caption_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `language`
+--
+ALTER TABLE `language`
+  MODIFY `language_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `material`
 --
 ALTER TABLE `material`
-  MODIFY `m_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `m_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `user`
@@ -340,10 +460,28 @@ ALTER TABLE `user`
 --
 
 --
+-- Constraints for table `captions_provided`
+--
+ALTER TABLE `captions_provided`
+  ADD CONSTRAINT `captions_provided_ibfk_1` FOREIGN KEY (`caption_id`) REFERENCES `caption` (`caption_id`),
+  ADD CONSTRAINT `captions_provided_ibfk_2` FOREIGN KEY (`m_id`) REFERENCES `material` (`m_id`),
+  ADD CONSTRAINT `captions_provided_ibfk_3` FOREIGN KEY (`caption_id`) REFERENCES `caption` (`caption_id`),
+  ADD CONSTRAINT `captions_provided_ibfk_4` FOREIGN KEY (`m_id`) REFERENCES `material` (`m_id`),
+  ADD CONSTRAINT `captions_provided_ibfk_5` FOREIGN KEY (`caption_id`) REFERENCES `caption` (`caption_id`),
+  ADD CONSTRAINT `captions_provided_ibfk_6` FOREIGN KEY (`m_id`) REFERENCES `material` (`m_id`);
+
+--
 -- Constraints for table `episode`
 --
 ALTER TABLE `episode`
   ADD CONSTRAINT `episode_ibfk_1` FOREIGN KEY (`m_id`) REFERENCES `material` (`m_id`);
+
+--
+-- Constraints for table `language_provide`
+--
+ALTER TABLE `language_provide`
+  ADD CONSTRAINT `language_provide_ibfk_1` FOREIGN KEY (`language_id`) REFERENCES `language` (`language_id`),
+  ADD CONSTRAINT `language_provide_ibfk_2` FOREIGN KEY (`m_id`) REFERENCES `material` (`m_id`);
 
 --
 -- Constraints for table `notificationlist`
