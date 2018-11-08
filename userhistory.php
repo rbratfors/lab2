@@ -9,7 +9,7 @@ session_start();
     
 <?php
 $uid = $_SESSION['user_id'];
-
+$rated = null;
 if(isset($_POST['submit'])) {
     
     $data_missing = array();
@@ -37,24 +37,65 @@ if(isset($_POST['submit'])) {
         $mid = trim($_POST['m_id']);
         $w = 1;
     }
+    require_once('mysqli_connect.php');
+    if(empty($_POST['e_id'])){
 
+        // Adds name to array
+        $data_missing[] = 'Epi_id';
+    } else {
 
-	require_once('mysqli_connect.php');
+        // Trim white space from the name and store the name
+        $eid = trim($_POST['e_id']);
+    }
+
 
 	if($w > 0) {
-		$query = "INSERT INTO user_history (user_id, m_id, watch_date, personal_rating)
-				 VALUES ('" . $uid . "', '" . $mid . "', '" . date("Y/m/d") . "', '" . $rated . "')";
+		$query = "INSERT INTO user_history (user_id, m_id, e_id, watch_date, personal_rating)
+				 VALUES ('" . $uid . "', '" . $mid . "', '" . $eid . "', '" . date("Y-m-d") . "', '" . $rated . "')";
 
 		$response = @mysqli_query($dbc, $query);
 		
-		if(!$response) {
+		$query = "SELECT count(*) FROM user_history
+					WHERE m_id = ". $mid .
+					" AND user_id = " . $uid;
+
+		echo $query;
+
+		$response = @mysqli_query($dbc, $query);
+
+		$ew = mysqli_fetch_array($response);
+
+		$ew = $ew[0];
+
+		$query = "SELECT episodes FROM material
+				WHERE m_id = ". $mid;
+
+		$response = @mysqli_query($dbc, $query);
+
+		$episodes = mysqli_fetch_array($response);
+
+		$episodes = $episodes[0];
+		
+		$er = $episodes - $ew;
+
+		echo $er;
+
+		if(empty($rated)) {
+		$query = "UPDATE user_history 
+					SET episodes_remaining = " . $er . 
+					" WHERE user_id = " . $uid .
+					" AND m_id = " . $mid;
+		} else {
 			$query = "UPDATE user_history 
 					SET personal_rating = " . $rated . 
-					" WHERE user_history.user_id = " . $uid .
-					" AND user_history.m_id = " . $mid;
-
-			$response = @mysqli_query($dbc, $query);
+					", episodes_remaining = " . $er . " WHERE user_id = " . $uid .
+					" AND m_id = " . $mid .
+					" AND e_id = " . $eid;
 		}
+
+		echo $query;
+		$response = @mysqli_query($dbc, $query);
+		
 
 		if($r > 0) {
 			$query = "SELECT SUM(personal_rating) FROM user_history
@@ -67,7 +108,7 @@ if(isset($_POST['submit'])) {
 			$sum = $sum[0];
 
 			$query = "SELECT count(*) FROM user_history
-					WHERE m_id = ". $mid;
+					WHERE personal_rating > 0 AND m_id = ". $mid;
 
 			$response = @mysqli_query($dbc, $query);
 
@@ -76,10 +117,10 @@ if(isset($_POST['submit'])) {
 			$count = $count[0];
 
 			$avg_rating = $sum/$count;
-			echo $avg_rating;
+
 			$query = "UPDATE material 
-						SET rating = " . $avg_rating . 
-						" WHERE m_id = ". $mid;
+					SET rating = " . $avg_rating . 
+					" WHERE m_id = ". $mid;
 
 			$response = @mysqli_query($dbc, $query);
 		}
@@ -103,7 +144,8 @@ require_once('mysqli_connect.php');
 		cellspacing="5" cellpadding="8">
 
 		<tr><td align="left"><b>User ID</b></td>
-		<td align="left"><b>Movie ID</b></td>
+		<td align="left"><b>Media ID</b></td>
+		<td align="left"><b>Episode</b></td>
 		<td align="left"><b>Title</b></td>
 		<td align="left"><b>Watch date</b></td>
 		<td align="left"><b>Personal rating</b></td></tr>';
@@ -114,6 +156,7 @@ require_once('mysqli_connect.php');
 			echo '<tr><td align="left">' . 
 			$row['user_id'] . '</td><td align="left">' . 
 			$row['m_id'] . '</td><td align="left">' .
+			$row['e_id'] . '</td><td align="left">' .
 			$row['title'] . '</td><td align="left">' . 
 			$row['watch_date'] . '</td><td align="left">' .
 			$row['personal_rating'] . '</td><td align="left">';
@@ -130,6 +173,7 @@ require_once('mysqli_connect.php');
   			<option value="5">5</option>
 
   			<input type='hidden' name='m_id' value='<?php echo $row['m_id']; ?>'/>
+  			<input type='hidden' name='e_id' value='<?php echo $row['e_id']; ?>'/>
 
   			<input type="submit" name="submit" value="Rate!" />
 			</form>
