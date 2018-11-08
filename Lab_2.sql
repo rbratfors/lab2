@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 07, 2018 at 09:02 PM
+-- Generation Time: Nov 08, 2018 at 08:10 AM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.11
 
@@ -31,6 +31,28 @@ SET time_zone = "+00:00";
 CREATE TABLE `actor` (
   `name` varchar(50) NOT NULL,
   `actor_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `caption`
+--
+
+CREATE TABLE `caption` (
+  `caption_id` int(11) UNSIGNED NOT NULL,
+  `captions` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `captions_provided`
+--
+
+CREATE TABLE `captions_provided` (
+  `caption_id` int(11) UNSIGNED NOT NULL,
+  `m_id` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -96,6 +118,28 @@ CREATE TABLE `episode` (
   `m_id` int(11) UNSIGNED NOT NULL,
   `episode_no` int(5) UNSIGNED NOT NULL,
   `episode_rating` float UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `language`
+--
+
+CREATE TABLE `language` (
+  `language_id` int(11) UNSIGNED NOT NULL,
+  `language` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `language_provide`
+--
+
+CREATE TABLE `language_provide` (
+  `language_id` int(11) UNSIGNED NOT NULL,
+  `m_id` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -234,6 +278,19 @@ ALTER TABLE `actor`
   ADD PRIMARY KEY (`actor_id`);
 
 --
+-- Indexes for table `caption`
+--
+ALTER TABLE `caption`
+  ADD PRIMARY KEY (`caption_id`);
+
+--
+-- Indexes for table `captions_provided`
+--
+ALTER TABLE `captions_provided`
+  ADD PRIMARY KEY (`caption_id`,`m_id`),
+  ADD KEY `m_id` (`m_id`);
+
+--
 -- Indexes for table `company`
 --
 ALTER TABLE `company`
@@ -256,6 +313,19 @@ ALTER TABLE `director`
 --
 ALTER TABLE `episode`
   ADD PRIMARY KEY (`episode_id`),
+  ADD KEY `m_id` (`m_id`);
+
+--
+-- Indexes for table `language`
+--
+ALTER TABLE `language`
+  ADD PRIMARY KEY (`language_id`);
+
+--
+-- Indexes for table `language_provide`
+--
+ALTER TABLE `language_provide`
+  ADD PRIMARY KEY (`language_id`,`m_id`),
   ADD KEY `m_id` (`m_id`);
 
 --
@@ -309,6 +379,18 @@ ALTER TABLE `user_history`
 --
 
 --
+-- AUTO_INCREMENT for table `caption`
+--
+ALTER TABLE `caption`
+  MODIFY `caption_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `language`
+--
+ALTER TABLE `language`
+  MODIFY `language_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `material`
 --
 ALTER TABLE `material`
@@ -325,10 +407,24 @@ ALTER TABLE `user`
 --
 
 --
+-- Constraints for table `captions_provided`
+--
+ALTER TABLE `captions_provided`
+  ADD CONSTRAINT `captions_provided_ibfk_1` FOREIGN KEY (`caption_id`) REFERENCES `caption` (`caption_id`),
+  ADD CONSTRAINT `captions_provided_ibfk_2` FOREIGN KEY (`m_id`) REFERENCES `material` (`m_id`);
+
+--
 -- Constraints for table `episode`
 --
 ALTER TABLE `episode`
   ADD CONSTRAINT `episode_ibfk_1` FOREIGN KEY (`m_id`) REFERENCES `material` (`m_id`);
+
+--
+-- Constraints for table `language_provide`
+--
+ALTER TABLE `language_provide`
+  ADD CONSTRAINT `language_provide_ibfk_1` FOREIGN KEY (`language_id`) REFERENCES `language` (`language_id`),
+  ADD CONSTRAINT `language_provide_ibfk_2` FOREIGN KEY (`m_id`) REFERENCES `material` (`m_id`);
 
 --
 -- Constraints for table `notificationlist`
