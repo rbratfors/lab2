@@ -1,10 +1,13 @@
 <?php
+session_start();
 
+$uid = $_SESSION['user_id'];
 if(isset($_POST['submit'])){
     
     $data_missing = array();
     $counter = 0;
-    $string = "";
+    $string = "AND ";
+    $join = "";
     
     if(empty($_POST['title'])){
 
@@ -15,6 +18,45 @@ if(isset($_POST['submit'])){
         $title = trim($_POST['title']);
         $counter++;
         $string .= "title = '".$title."' AND ";
+    }
+
+    if(empty($_POST['actor'])){
+
+        $data_missing[] = 'Actor';
+
+    } else {
+
+        $actor = trim($_POST['actor']);
+        $counter++;
+        $string .= "actor.name = '".$actor."' AND ";
+        $join .= "INNER JOIN roles ON roles.m_id = material.m_id
+                INNER JOIN actor ON actor.actor_id = roles.actor_id ";
+    }
+
+    if(empty($_POST['director'])){
+
+        $data_missing[] = 'Director';
+
+    } else {
+
+        $director = trim($_POST['director']);
+        $counter++;
+        $string .= "director.name = '".$director."' AND ";
+        $join .= "INNER JOIN directing ON directing.m_id = material.m_id
+                INNER JOIN director ON director.director_id = directing.director_id ";
+    }
+
+    if(empty($_POST['company'])){
+
+        $data_missing[] = 'Company';
+
+    } else {
+
+        $company = trim($_POST['company']);
+        $counter++;
+        $string .= "company.name = '".$company."' AND ";
+        $join .= "INNER JOIN producedby ON producedby.m_id = material.m_id
+                INNER JOIN company ON company.company_id = producedby.company_id ";
     }
 
     if(empty($_POST['genre'])){
@@ -60,16 +102,35 @@ if(isset($_POST['submit'])){
         $counter++;
         $string .= "language = '".$language."' AND ";
     }
-
+    $age = $_SESSION['age'];
+    $mpaa = 5;
+    if($age < 8)
+        $mpaa = 1;
+    else if($age < 13)
+        $mpaa = 2;
+    else if($age < 15)
+        $mpaa = 3;
+    else if($age < 18)
+        $mpaa = 4;
     $string = substr(trim($string), 0, -3);
+
+
+
 	require_once('mysqli_connect.php');
 
 	if($counter > 0) {
-		$query = "SELECT * FROM material
-			WHERE ".$string;
+		$query = "SELECT * FROM material ".$join."
+        WHERE material.m_id 
+        NOT IN (SELECT m_id 
+            FROM user_history 
+            WHERE episodes_remaining < 1) 
+        AND mpaa_rating < ". $mpaa. " ".$string;
 	} else {
-		$query = "SELECT * FROM material";
+		$query = "SELECT * FROM material WHERE 
+                m_id NOT IN (SELECT m_id FROM user_history WHERE episodes_remaining < 1) 
+                AND mpaa_rating <". $mpaa;
 	}
+    echo $query;
 
 	$response = @mysqli_query($dbc, $query);
 

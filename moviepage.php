@@ -17,7 +17,7 @@ if($response){
 	'<div style="font-size:160%;">' . $row['year'] . '</div>' . '<br />' .
 	'<div style="font-size:160%;">' . $row['genre'] . '</div>' . '<br />' . 
 	'<div style="font-size:160%;">' . $row['category'] . '</div>' . '<br />' .
-	'<div style="font-size:160%;">' . $row['rating'] . '</div>' . '<br />';
+	'<div style="font-size:160%;">' . $row['rating'] . '</div>';
 
 	$mid = $row['m_id'];
 ?>
@@ -25,27 +25,17 @@ if($response){
 
 <p>Rate it:
 <select id="rated" name="rated">                      
-  <option value="0">0</option>
+  <option value=""></option>
   <option value="1">1</option>
   <option value="2">2</option>
   <option value="3">3</option>
   <option value="4">4</option>
   <option value="5">5</option>
-  <option value="6">6</option>
-  <option value="7">7</option>
-  <option value="8">8</option>
-  <option value="9">9</option>
-  <option value="10">10</option>
 </select>
 </p>
 
 <input type='hidden' name='m_id' value='<?php echo $mid; ?>'/>
-
-<p>
-    <input type="submit" name="submit" value="Watch" />
-</p>
-
-</form>
+<input type='hidden' name='e_id' value='1'/>
 
 <?php
 	
@@ -63,13 +53,28 @@ if($row['episodes'] > 1) {
 	echo '<div style="font-size:130%;">Episode list:</div>';
 	while($e>0) {
 		echo "Episode".$counter;
+		?>
+
+		<input type='hidden' name='submit' value='submit!!'/>
+		<button type="submit" name="e_id" value='<?php echo $counter; ?>' >Watch</button>
+		<?php
 		echo "<br>";
 		$counter++;
 		$e--;
 	}
+
+} else {
+
+	?>
+	<p>
+    <input type="submit" name="submit" value="Watch" />
+	</p>
+	<?php
 
 }
 
 mysqli_close($dbc);
 
 ?>
+
+</form>

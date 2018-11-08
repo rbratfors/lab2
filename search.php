@@ -5,52 +5,65 @@
 <body>
 <form action="http://localhost/searchresult.php" method="post">
     
-    <b>Advanced search</b>
+  <b>Advanced search</b>
     
-    <p>Title:
-<input type="text" name="title" size="30" value="" />
-</p>
+  <p>Title:
+    <input type="text" name="title" size="30" value="" />
+  </p>
 
-<p>Genre:
-<select id="genre" name="genre">                      
-  <option value="0"></option>
-  <option value="Adventure">Adventure</option>
-  <option value="Sci-fi">Sci-fi</option>
-  <option value="Romance">Romance</option>
-</select>
-</p>
+  <p>Actor:
+    <input type="text" name="actor" size="30" value="" />
+  </p>
 
-<p>Category:
-<select id="category" name="category">                      
-  <option value="0"></option>
-  <option value="Movie">Movie</option>
-  <option value="TV-series">TV-series</option>
-</select>
-</p>
+  <p>Director:
+    <input type="text" name="director" size="30" value="" />
+  </p>
 
-<p>Language:
-<select id="language" name="language">                      
-  <option value="0"></option>
-  <option value="English">English</option>
-  <option value="Swedish">Swedish</option>
-</select>
-</p>
+  <p>Production Company:
+    <input type="text" name="company" size="30" value="" />
+  </p>
 
-<p>Minimum rating:
-<select id="rating" name="rating">                      
-  <option value="0"></option>
-  <option value="1">1</option>
-  <option value="2">2</option>
-  <option value="3">2</option>
-  <option value="4">2</option>
-  <option value="5">2</option>
-</select>
-</p>
+  <p>Genre:
+  <select id="genre" name="genre">                      
+    <option value="0"></option>
+    <option value="Adventure">Adventure</option>
+    <option value="Sci-fi">Sci-fi</option>
+    <option value="Romance">Romance</option>
+  </select>
+  </p>
+
+  <p>Category:
+  <select id="category" name="category">                      
+    <option value="0"></option>
+    <option value="Movie">Movie</option>
+    <option value="TV-series">TV-series</option>
+  </select>
+  </p>
+
+  <p>Language:
+  <select id="language" name="language">                      
+    <option value="0"></option>
+    <option value="English">English</option>
+    <option value="Swedish">Swedish</option>
+  </select>
+  </p>
+
+  <p>Minimum rating:
+  <select id="rating" name="rating">                      
+    <option value="0"></option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+  </select>
+  </p>
 
 <p>
     <input type="submit" name="submit" value="Search" />
 </p>
     
 </form>
+
 </body>
 </html>
